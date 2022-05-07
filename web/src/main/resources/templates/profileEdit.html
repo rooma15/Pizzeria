@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:insert="header::copy"></div>
+<h2 align="center" th:text="#{profile.edit}"></h2>
+<div class="container mt-3 w-50">
+    <form action="/user/profile/edit" method="post">
+        <div class="form-group-lg">
+            <div th:object="${currentUser}">
+                <label for="username" th:text="#{username}"></label>
+                <input class="form-control is-valid" id="username" name="username" required th:field="*{username}"
+                       type="text"/>
+                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+            </div>
+            <div th:object="${currentPersonalInfo}">
+                <label for="firstName" th:text="#{first.name}"></label>
+                <input class="form-control is-valid" id="firstName" name="firstName" required th:field="*{firstName}"
+                       type="text">
+                <label for="lastName" th:text="#{last.name}"></label>
+                <input class="form-control is-valid" id="lastName" name="lastName" required th:field="*{lastName}"
+                       type="text">
+                <label for="phoneNumber" th:text="#{phone.number}"></label>
+                <input class="form-control is-valid" id="phoneNumber" name="phoneNumber" required
+                       th:field="*{phoneNumber}" type="tel">
+                <label for="email" th:text="#{email}">Email</label>
+                <input class="form-control is-valid" id="email" name="email" required th:field="*{email}" type="email">
+                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+            </div>
+            <button class="btn btn-primary mt-2" th:text="#{registration.save}" type="submit"></button>
+            <a class="btn btn-secondary mt-2" role="button" th:href="@{'/user/'+${currentUser?.getId()}}"
+               th:text="#{form.cancel}"></a>
+        </div>
+    </form>
+</div>
+<div th:insert="footer::copy"></div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery</title>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+</head>
+<body>
+<div th:insert="header::copy"></div>
+<h2 align="center" th:text="#{header.registration}"></h2>
+<div class="container mt-5 w-50">
+    <form action="/registration" method="post">
+        <div class="form-group-lg">
+            <div th:object="${newUser}">
+                <label class="text-danger" for="username" th:if="${message}" th:text="${message}"></label>
+                <label for="username" th:text="#{username}" th:unless="${message}"></label>
+                <input class="form-control is-valid" id="username" required th:field="*{username}" type="text"/>
+                <label for="password" th:text="#{password}"></label>
+                <input class="form-control is is-valid" id="password" required th:field="*{password}" type="password">
+                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+            </div>
+            <div th:object="${personalInfo}">
+                <label for="firstName" th:text="#{first.name}"></label>
+                <input class="form-control is-valid" id="firstName" required th:field="*{firstName}" type="text">
+                <label for="lastName" th:text="#{last.name}"></label>
+                <input class="form-control is-valid" id="lastName" required th:field="*{lastName}" type="text">
+                <label for="phoneNumber" th:text="#{phone.number}"></label>
+                <input class="form-control is-valid" id="phoneNumber" required th:field="*{phoneNumber}" type="tel">
+                <label for="email" th:text="#{email}"></label>
+                <input class="form-control is-valid" id="email" required th:field="*{email}" type="email">
+                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+            </div>
+            <button class="btn btn-primary mt-2" th:text="#{registration.save}" type="submit"></button>
+        </div>
+    </form>
+</div>
+<!--<div th:insert="footer::copy"></div>-->
+</body>
+</html>

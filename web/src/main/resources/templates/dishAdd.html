@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:insert="header::copy"></div>
+<h2 th:text="#{add.dish}"></h2>
+<div class="container mt-3">
+    <form action="/admin/dish/add" method="post">
+        <div class="form-group w-50" th:object="${newDish}">
+            <label for="category" th:text="#{category}"></label>
+            <select class="form-control" id="category" name="category">
+                <option th:text="#{category.pizza}" value="PIZZA"></option>
+                <option th:text="#{category.sushi}" value="SUSHI"></option>
+                <option th:text="#{category.gyros}" value="GYROS"></option>
+                <option th:text="#{category.garnish}" value="GARNISH"></option>
+                <option th:text="#{category.vegetarian}" value="VEGETARIAN"></option>
+                <option th:text="#{category.desert}" value="DESERT"></option>
+                <option th:text="#{category.drink}" value="DRINK"></option>
+            </select>
+            <label for="title" th:text="#{menu.title}"></label>
+            <input class="form-control is-valid" id="title" required th:field="*{title}" type="text">
+            <label for="price" th:text="#{menu.price}"></label>
+            <input class="form-control is-valid" id="price" required th:field="*{price}" type="text">
+            <label for="description" th:text="#{menu.description}"></label>
+            <input class="form-control" id="description" th:field="*{description}">
+            <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+            <button class="btn btn-primary mt-2" th:text="#{registration.save}" type="submit"></button>
+            <a class="btn btn-secondary mt-2" href="/admin/dishes" role="button" th:text="#{form.cancel}"></a>
+        </div>
+    </form>
+</div>
+</body>
+<footer>
+    <div th:insert="footer::copy"></div>
+</footer>
+</html>

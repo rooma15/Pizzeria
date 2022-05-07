@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delivery</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+</head>
+<body>
+<div th:insert="header::copy"></div>
+<h2 align="center" th:text="#{profile.page}"></h2>
+<div class="row m-1">
+    <div class="col-sm-3">
+        <div class="card">
+            <div class="card-body" th:object="${currentPersonalInfo}">
+                <h5 class="card-title" th:text="#{profile.user.info}"></h5>
+                <div class="row mx-1">
+                    <p class="card-text" th:text="#{username}+':'"></p>
+                    <span class="ml-1" th:text="${currentUser.getUsername()}"></span>
+                </div>
+                <div class="row mx-1">
+                    <p class="card-text" th:text="#{first.name}+':'"></p>
+                    <span class="ml-1" th:text="*{getFirstName().isEmpty()}?'No first name':*{getFirstName()}"></span>
+                </div>
+                <div class="row mx-1">
+                    <p class="card-text" th:text="#{last.name}+':'"></p>
+                    <span class="ml-1" th:text="*{getLastName().isEmpty()}?'No last name':*{getLastName()}"></span>
+                </div>
+                <div class="row mx-1">
+                    <p class="card-text" th:text="#{email}+':'"></p>
+                    <span class="ml-1" th:text="*{getEmail().isEmpty()}?'No email':*{getEmail()}"></span>
+                </div>
+                <div class="row mx-1">
+                    <p class="card-text" th:text="#{phone.number}+':'"></p>
+                    <span class="ml-1"
+                          th:text="*{getPhoneNumber().isEmpty()}?'No phone number':*{getPhoneNumber()}"></span>
+                </div>
+                <a class="btn btn-primary" href="/user/profile/edit" th:text="#{profile.edit}"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" th:text="#{profile.address}"></h5>
+                <table class="table" th:object="${currentPersonalInfo}">
+                    <tbody>
+                    <tr th:if="*{addresses.isEmpty()}">
+                        <td colspan="2">No addresses available</td>
+                    </tr>
+                    <tr th:each="address : *{addresses}">
+                        <td><span th:text="${address.getFullAddress()}"></span></td>
+                        <td><a class="btn btn-link" role="button"
+                               th:href="@{'/address/edit/'+${address?.getId()}}" th:text="#{low.case.edit}"></a></td>
+                        <td>
+                            <form method="post" th:action="@{/address/delete}">
+                                <input hidden name="id" th:value="${address.id}">
+                                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+                                <button class="btn btn-link" th:text="#{low.case.del}" type="submit"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" href="/address/add" th:text="#{profile.add.address}"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" th:text="#{profile.credit.card}"></h5>
+                <table class="table" th:object="${currentPersonalInfo}">
+                    <tbody>
+                    <tr th:if="*{creditCards.isEmpty()}">
+                        <td colspan="2">No credit cards available</td>
+                    </tr>
+                    <tr th:each="card : *{creditCards}">
+                        <td><span th:text="${card.cardInfo}"></span></td>
+                        <td>
+                            <form method="post" th:action="@{/creditCard/delete}">
+                                <input hidden name="id" th:value="${card.id}">
+                                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+                                <button class="btn btn-link" th:text="#{low.case.del}" type="submit"></button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" href="/creditCard/add" th:text="#{profile.add.card}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="footer::copy"></div>
+</body>
+</html>

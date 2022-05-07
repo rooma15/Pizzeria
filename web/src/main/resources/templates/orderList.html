@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="copy" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery</title>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+</head>
+<body>
+<div th:insert="header::copy"></div>
+<h2 th:text="#{order.list}"></h2>
+<div class="mx-5">
+    <table class="table">
+        <thead class="table">
+        <tr>
+            <th scope="col" th:text="#{username}"></th>
+            <th scope="col" th:text="#{order.date}"></th>
+            <th scope="col" th:text="#{dishes}"></th>
+            <th scope="col" th:text="#{order.total.price}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${orderList.isEmpty()}">
+            <td colspan="2">No user available</td>
+        </tr>
+        <tr th:each="order : ${orderList}">
+            <td><span th:text="${order.user.username}"></span></td>
+            <td><span th:text="${order.dateTime}"></span></td>
+            <td><span th:text="${order.allDishes}"></span></td>
+            <td><span th:text="'$ ' + ${order.totalPrice}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<footer>
+    <!--<div th:insert="footer::copy"></div>-->
+
+</footer>
+</html>
