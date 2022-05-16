@@ -22,6 +22,4 @@ public class Ingredient extends BaseEntity{
     @Column(name = "ingredient")
     private String name;
 
-    /*@OneToMany(mappedBy = "ingredient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    List<DishIngredient> dishIngredients;*/
 }

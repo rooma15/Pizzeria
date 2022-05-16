@@ -42,7 +42,5 @@ public class Dish extends BaseEntity {
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    //@OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //private List<DishIngredient> dishIngredients;
     List<Ingredient> ingredients;
 }

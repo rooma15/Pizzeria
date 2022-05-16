@@ -81,14 +81,16 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<Dish> getRecomendations(User user) {
         List<Order> orders = orderService.getAllByUser(user);
-        List<Ingredient> ingredient = new ArrayList<>();
+        List<Ingredient> ingredients = new ArrayList<>();
         for (Order order : orders) {
             for (Dish dish : order.getDishes()) {
-                ingredient.addAll(dish.getIngredients());
+                ingredients.addAll(dish.getIngredients());
             }
         }
-        List<Ingredient> topIngredients = ingredient.stream()
-                .sorted(Comparator.comparingInt(o -> Collections.frequency(ingredient, o)))
+        List<Ingredient> topIngredients = ingredients.stream()
+                .sorted((o1, o2) -> Integer.compare(
+                        Collections.frequency(ingredients, o2),
+                        Collections.frequency(ingredients, o1)))
                 .filter(distinctByKey(Ingredient::getId))
                 .limit(3)
                 .collect(Collectors.toList());
