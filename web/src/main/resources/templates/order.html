@@ -16,22 +16,23 @@
             <th scope="col" th:text="#{menu.title}"></th>
             <th scope="col" th:text="#{menu.price}"></th>
             <th scope="col" th:text="#{menu.description}"></th>
-            <th scope="col"></th>
+            <th scope="col" th:text="#{menu.amount}"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:if="${currentOrder.dishes.isEmpty()}">
+        <tr th:if="${currentBusket.isEmpty()}">
             <td colspan="2">No dishes available <a href="/home/menu?category=PIZZA" th:text="#{menu.add}"></a> something
                 to order
             </td>
         </tr>
-        <tr th:each="dish : ${currentOrder.dishes}">
-            <td><span th:text="*{dish.getTitle()}"></span></td>
-            <td><span th:text="'$ '+${dish.getPrice()}"></span></td>
-            <td><span th:text="${dish.getDescription()}"></span></td>
+        <tr th:each="busketItem : ${currentBusket}">
+            <td><span th:text="*{busketItem.getDish().getTitle()}"></span></td>
+            <td><span th:text="'$ '+${busketItem.getDish().getPrice()}"></span></td>
+            <td><span th:text="${busketItem.getDish().getDescription()}"></span></td>
+            <td><span th:text="${busketItem.getAmount()}"></span></td>
             <td>
-                <form method="post" th:action="@{/order/delete}">
-                    <input hidden name="id" th:value="${dish.id}">
+                <form method="post" th:action="@{/busket/delete}">
+                    <input hidden name="dishId" th:value="${busketItem.getDish().id}">
                     <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
                     <button class="btn btn-link" th:text="#{low.case.del}" type="submit"></button>
                 </form>

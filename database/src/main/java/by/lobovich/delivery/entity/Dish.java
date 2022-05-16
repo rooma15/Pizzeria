@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -19,7 +18,7 @@ import java.util.List;
 public class Dish extends BaseEntity {
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Double price;
 
     @Column(name = "sale")
     private Boolean isSale = false;
@@ -34,7 +33,16 @@ public class Dish extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    @ManyToMany(mappedBy = "dishes", fetch = FetchType.EAGER)
-    private List<Order> order;
+    @ManyToMany(mappedBy = "dishes", fetch = FetchType.LAZY)
+    private List<Order> orders;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "dish_ingredient",
+            joinColumns = @JoinColumn(name = "dish_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    //@OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private List<DishIngredient> dishIngredients;
+    List<Ingredient> ingredients;
 }

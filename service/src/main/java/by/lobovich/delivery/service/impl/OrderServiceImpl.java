@@ -1,5 +1,6 @@
 package by.lobovich.delivery.service.impl;
 
+import by.lobovich.delivery.entity.BusketItem;
 import by.lobovich.delivery.entity.Dish;
 import by.lobovich.delivery.entity.Order;
 import by.lobovich.delivery.entity.User;
@@ -8,8 +9,12 @@ import by.lobovich.delivery.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -26,7 +31,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order save(Order order) {
+    public Order createOrder(List<BusketItem> busketItems, User user) {
+        List<Dish> dishes = busketItems.stream()
+                .map(item -> {
+                    List<Dish> itemDishes = new ArrayList<>();
+                    for (int i = 0; i < item.getAmount(); i++) {
+                        itemDishes.add(item.getDish());
+                    }
+                    return itemDishes;
+                })
+                .flatMap(List::stream).collect(Collectors.toList());
+
+        Order order = Order.builder()
+                .user(user)
+                .dateTime(LocalDateTime.now())
+                .dishes(dishes)
+                .build();
         return orderRepository.save(order);
     }
 
@@ -36,15 +56,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BigDecimal getTotalPrice(Order order) {
+    public Double getTotalPrice(Order order) {
         List<Dish> dishes = order.getDishes();
         if (!dishes.isEmpty()) {
             return dishes.stream()
-                    .map(Dish::getPrice)
-                    .reduce(BigDecimal::add)
-                    .get();
+                    .mapToDouble(Dish::getPrice)
+                    .sum();
         }
-        return new BigDecimal(0);
+        return (double) 0;
     }
 
     @Override
@@ -57,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> allByUser = orderRepository.findAllByUser(user);
         return allByUser.stream()
                 .max(Comparator.comparing(Order::getDateTime))
-                .get();
+                .orElse(null);
 
     }
 }

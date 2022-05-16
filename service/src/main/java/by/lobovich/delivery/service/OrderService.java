@@ -1,19 +1,19 @@
 package by.lobovich.delivery.service;
 
+import by.lobovich.delivery.entity.BusketItem;
 import by.lobovich.delivery.entity.Order;
 import by.lobovich.delivery.entity.User;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
     Order getById(Long id);
 
-    Order save(Order order);
+    Order createOrder(List<BusketItem> busketItems, User user);
 
     void delete(Long id);
 
-    BigDecimal getTotalPrice(Order order);
+    Double getTotalPrice(Order order);
 
     List<Order> getAllByUser(User user);
 

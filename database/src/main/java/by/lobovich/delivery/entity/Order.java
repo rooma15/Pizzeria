@@ -20,8 +20,7 @@ import java.util.stream.Collectors;
 @Proxy
 public class Order extends BaseEntity {
 
-    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Column(name = "date")
@@ -41,13 +40,12 @@ public class Order extends BaseEntity {
                 .collect(Collectors.joining(", "));
     }
 
-    public BigDecimal getTotalPrice() {
+    public double getTotalPrice() {
         if (!dishes.isEmpty()) {
             return dishes.stream()
-                    .map(Dish::getPrice)
-                    .reduce(BigDecimal::add)
-                    .get();
+                    .mapToDouble(Dish::getPrice)
+                    .sum();
         }
-        return new BigDecimal(0);
+        return 0;
     }
 }

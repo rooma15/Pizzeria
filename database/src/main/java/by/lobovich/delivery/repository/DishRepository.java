@@ -11,5 +11,5 @@ import java.util.List;
 public interface DishRepository extends JpaRepository<Dish, Long> {
 
     List<Dish> findAllByCategory(Category category);
-
+    boolean existsDishById(Long id);
 }

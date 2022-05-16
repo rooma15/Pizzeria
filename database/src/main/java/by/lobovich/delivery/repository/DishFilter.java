@@ -47,8 +47,8 @@ public class DishFilter {
     }
 
     private Predicate priceFilter(CriteriaBuilder cb, Dish dish, Root<Dish> root) {
-        BigDecimal price = dish.getPrice();
-        Path<BigDecimal> path = root.get("price");
+        Double price = dish.getPrice();
+        Path<Double> path = root.get("price");
         return price != null ? cb.lessThanOrEqualTo(path, price) : null;
     }
 

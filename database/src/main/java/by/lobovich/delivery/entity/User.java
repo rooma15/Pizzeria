@@ -6,7 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -28,8 +30,11 @@ public class User extends BaseEntity implements UserDetails {
 
     private boolean active;
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
-    private Order order;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<BusketItem> busketItems;
 
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

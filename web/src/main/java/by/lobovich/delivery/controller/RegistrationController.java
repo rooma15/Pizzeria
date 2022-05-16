@@ -68,12 +68,6 @@ public class RegistrationController {
         userService.save(newUser);
         personalInfo.setUser(newUser);
         personalInfoService.save(personalInfo);
-        Order order = Order.builder()
-                .dishes(new ArrayList<>())
-                .user(newUser)
-                .dateTime(LocalDateTime.now())
-                .build();
-        orderService.save(order);
         return "redirect:/login";
     }
 }

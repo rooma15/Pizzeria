@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery</title>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+</head>
+<body>
+<div th:insert="header::copy"></div>
+<h2 align="center" th:text="#{order.page}"></h2>
+<div class="container">
+    <div class="row">
+        <div class="col-4" th:text="#{menu.title}"></div>
+        <div class="col-4" th:text="#{menu.price}"></div>
+        <div class="col-4" th:text="#{menu.amount}"></div>
+    </div>
+    <div class="row" th:each="order : ${orders}">
+        <div class="container-fluid">
+            <div class="row" th:each="dish : ${order.getDishes()}">
+                <div class="col-4"><span th:text="*{dish.key.getTitle()}"></span></div>
+                <div class="col-4"><span th:text="'$ '+${dish.key.getPrice()}"></span></div>
+                <div class="col-4"><span th:text="${dish.value}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col" th:text="#{order.total.price}+' : $ '+${order.getTotalPrice()}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div th:insert="footer::copy"></div>-->
+</body>
+</html>

@@ -21,10 +21,12 @@
            th:if="${currentUser?.id}" th:text="#{header.profile}"></a>
         <a class="p-2 text-dark" th:unless="${currentUser?.id}"></a>
 
-        <a class="p-2 text-dark" th:href="@{/order}" th:if="${currentUser?.id}" th:text="#{header.order}"></a>
+        <a class="p-2 text-dark" th:href="@{/order}" th:text="#{header.orderhistory}"></a>
+
+        <a class="p-2 text-dark" th:href="@{/busket}" th:if="${currentUser?.id}" th:text="#{header.order}"></a>
         <span class="alert alert-danger p-sm-1"
               th:if="${currentUser?.id}"
-              th:text="${currentOrder.dishes.size()}"></span>
+              th:text="${currentBusketSize}"></span>
     </nav>
     <a class="btn btn-outline-primary" th:href="@{/login}" th:text="#{header.login}" th:unless="${currentUser?.id}"></a>
 

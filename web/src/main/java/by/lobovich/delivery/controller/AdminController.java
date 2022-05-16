@@ -1,19 +1,15 @@
 package by.lobovich.delivery.controller;
 
-import by.lobovich.delivery.entity.Category;
-import by.lobovich.delivery.entity.Dish;
-import by.lobovich.delivery.entity.Order;
-import by.lobovich.delivery.entity.User;
+import by.lobovich.delivery.entity.*;
+import by.lobovich.delivery.service.BusketItemService;
 import by.lobovich.delivery.service.DishService;
 import by.lobovich.delivery.service.OrderService;
 import by.lobovich.delivery.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -24,12 +20,13 @@ public class AdminController {
     private final UserService userService;
     private final DishService dishService;
     private final OrderService orderService;
+    private final BusketItemService busketItemService;
 
-    @Autowired
-    public AdminController(UserService userService, DishService dishService, OrderService orderService) {
+    public AdminController(UserService userService, DishService dishService, OrderService orderService, BusketItemService busketItemService) {
         this.userService = userService;
         this.dishService = dishService;
         this.orderService = orderService;
+        this.busketItemService = busketItemService;
     }
 
     @ModelAttribute("currentUser")
@@ -37,9 +34,16 @@ public class AdminController {
         return userService.getUserFromSecurityContext();
     }
 
-    @ModelAttribute("currentOrder")
-    public Order getCurrentOrder() {
-        return orderService.getLastByUser(getCurrentUser());
+    @ModelAttribute("currentBusket")
+    public List<BusketItem> getCurrentBusket() {
+        return busketItemService.getBusketItems(getCurrentUser());
+    }
+
+    @ModelAttribute("currentBusketSize")
+    public Integer getCurrentBusketSize() {
+        return busketItemService.getBusketItems(getCurrentUser()).stream()
+                .mapToInt(BusketItem::getAmount)
+                .sum();
     }
 
     @ModelAttribute("newDish")
@@ -93,7 +97,7 @@ public class AdminController {
             @RequestParam Long dishId,
             @RequestParam String title,
             @RequestParam String category,
-            @RequestParam BigDecimal price,
+            @RequestParam Double price,
             @RequestParam String description
     ) {
         Dish dish = dishService.getById(dishId);

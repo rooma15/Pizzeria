@@ -1,20 +1,20 @@
 package by.lobovich.delivery.controller;
 
+import by.lobovich.delivery.entity.BusketItem;
 import by.lobovich.delivery.entity.Dish;
 import by.lobovich.delivery.entity.Order;
 import by.lobovich.delivery.entity.User;
+import by.lobovich.delivery.service.BusketItemService;
 import by.lobovich.delivery.service.DishService;
 import by.lobovich.delivery.service.OrderService;
 import by.lobovich.delivery.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import by.lobovich.delivery.service.entity.OrderHistoryItem;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("order")
@@ -23,12 +23,17 @@ public class OrderController {
     private final UserService userService;
     private final OrderService orderService;
     private final DishService dishService;
+    private final BusketItemService busketItemService;
 
-    @Autowired
-    public OrderController(UserService userService, OrderService orderService, DishService dishService) {
+    public OrderController(
+            UserService userService,
+            OrderService orderService,
+            DishService dishService,
+            BusketItemService busketItemService) {
         this.userService = userService;
         this.orderService = orderService;
         this.dishService = dishService;
+        this.busketItemService = busketItemService;
     }
 
     @ModelAttribute("currentUser")
@@ -39,7 +44,27 @@ public class OrderController {
     @ModelAttribute("currentOrder")
     public Order getCurrentOrder() {
         return orderService.getLastByUser(getCurrentUser());
-        //return getCurrentUser().getOrder();
+    }
+
+    @ModelAttribute("currentBusket")
+    public List<BusketItem> getCurrentBusket() {
+        return busketItemService.getBusketItems(getCurrentUser());
+    }
+
+    @ModelAttribute("currentBusketSize")
+    public Integer getCurrentBusketSize() {
+        return busketItemService.getBusketItems(getCurrentUser())
+                .stream()
+                .mapToInt(BusketItem::getAmount)
+                .sum();
+    }
+
+    @ModelAttribute("orders")
+    public List<OrderHistoryItem> getOrders() {
+        return orderService.getAllByUser(getCurrentUser())
+                .stream()
+                .map(OrderHistoryItem::new)
+                .collect(Collectors.toList());
     }
 
     @ModelAttribute("newDish")
@@ -49,49 +74,19 @@ public class OrderController {
 
     @GetMapping
     public String getOrder(Model model) {
-        BigDecimal totalPrice = orderService.getTotalPrice(getCurrentOrder());
-        model.addAttribute("totalPrice", totalPrice);
-        return "order";
-    }
-
-    @PostMapping("/add")
-    public String addDish(@RequestParam("dishId") Long id) {
-        Order order = orderService.getLastByUser(getCurrentUser());
-        Dish dish = dishService.getById(id);
-        order.getDishes().add(dish);
-        orderService.save(order);
-        return "redirect:/home/menu?category=" + dish.getCategory();
-    }
-
-    @PostMapping("/delete")
-    public String deleteDish(@RequestParam Long id) {
-        Order order = getCurrentOrder();
-        Dish dish = order.getDishes().stream()
-                .filter(d -> d.getId().equals(id))
-                .findFirst()
-                .get();
-        order.getDishes().remove(dish);
-        orderService.save(order);
-        return "redirect:/order";
+        return "orderhistory";
     }
 
     @PostMapping("/submit")
     public String submitOrder() {
         User user = getCurrentUser();
-        if (orderService.getLastByUser(user).getDishes().isEmpty()) {
+        List<BusketItem> busketItems = busketItemService.getBusketItems(user);
+        if (busketItems.isEmpty()) {
             return "redirect:/order";
         }
-
-
-        Order order = Order.builder()
-                .dishes(new ArrayList<>(Collections.emptyList()))
-                .user(user)
-                .dateTime(LocalDateTime.now())
-                .build();
-
-
-        orderService.save(order);
-        user.setOrder(order);
+        if (orderService.createOrder(busketItems, user) != null) {
+            busketItemService.clearBusket(user);
+        }
         return "redirect:/home";
     }
 }
