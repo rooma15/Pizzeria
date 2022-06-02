@@ -15,7 +15,7 @@
             <label for="name" th:text="#{username}"></label>
             <input class="form-control is-valid" id="name" name="username" required type="text"/>
             <label for="password" th:text="#{password}"></label>
-            <input class="form-control is-valid" id="password" name="password" required type="password"/>
+            <input class="form-control is-valid" id="password" name="password" minlength="8" required type="password"/>
         </div>
         <button class="btn btn-primary mt-1" th:text="#{header.login}" type="submit"></button>
     </form>
