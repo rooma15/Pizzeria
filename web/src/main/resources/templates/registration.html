@@ -15,7 +15,7 @@
             <div th:object="${newUser}">
                 <label class="text-danger" for="username" th:if="${message}" th:text="${message}"></label>
                 <label for="username" th:text="#{username}" th:unless="${message}"></label>
-                <input class="form-control is-valid" id="username" required th:field="*{username}" type="text"/>
+                <input class="form-control is-valid" id="username" required th:field="*{username}" type="text" pattern="[A-Za-z]+"/>
                 <label for="password" th:text="#{password}"></label>
                 <input class="form-control is is-valid" id="password" required th:field="*{password}" minlength="8" type="password">
                 <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
