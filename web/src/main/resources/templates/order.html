@@ -7,6 +7,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
 </head>
 <body>
+<script th:src="@{/js/script.js}" type="text/javascript"></script>
 <div th:insert="header::copy"></div>
 <h2 align="center" th:text="#{order.page}"></h2>
 <div class="container">
@@ -33,7 +34,6 @@
             <td>
                 <form method="post" th:action="@{/busket/delete}">
                     <input hidden name="dishId" th:value="${busketItem.getDish().id}">
-                    <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
                     <button class="btn btn-link" th:text="#{low.case.del}" type="submit"></button>
                 </form>
             </td>
@@ -43,10 +43,9 @@
             <td><span th:text="'$ '+${totalPrice}"></span></td>
             <td></td>
             <td>
-                <form method="post" th:action="@{/order/submit}">
-                    <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
+                <form method="post" id="submit-order" th:action="@{/order/submit}">
                     <div>
-                        <button class="btn btn-success" th:text="#{order.submit}" type="submit"></button>
+                        <button class="btn btn-success" id="order-submit-button" th:text="#{order.submit}" type="submit"></button>
                     </div>
                 </form>
             </td>

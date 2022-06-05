@@ -36,7 +36,6 @@
                 <input class="form-control is-valid" id="entrance" name="entrance" required th:value="*{entranceNumber}"
                        type="text">
                 <input hidden name="id" th:value="*{id}"/>
-                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
             </div>
             <button class="btn btn-primary mt-2" type="submit">Save</button>
             <a class="btn btn-secondary mt-2" role="button" th:href="@{'/user/'+${currentUser?.getId()}}">Cancel</a>

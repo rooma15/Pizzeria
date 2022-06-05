@@ -1,6 +1,7 @@
 package by.lobovich.delivery.service.impl;
 
 import by.lobovich.delivery.entity.CreditCard;
+import by.lobovich.delivery.entity.PersonalInfo;
 import by.lobovich.delivery.repository.CreditCardRepository;
 import by.lobovich.delivery.service.CreditCardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class CreditCardServiceImpl implements CreditCardService {
     @Override
     public void deleteByCreditCard(CreditCard creditCard) {
         creditCardRepository.delete(creditCard);
+    }
+
+    public CreditCard getByPersonalInfo(PersonalInfo pi){
+        return creditCardRepository.getByPersonalInfo(pi);
     }
 }

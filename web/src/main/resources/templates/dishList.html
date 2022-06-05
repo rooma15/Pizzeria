@@ -33,7 +33,6 @@
                                  th:href="@{'/admin/dish/edit/'+${dish?.id}}" th:text="#{low.case.edit}"></a>
                 <form method="post" th:action="@{/admin/dish/delete}">
                     <input hidden name="dishId" th:value="${dish.id}">
-                    <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
                     <button class="btn btn-link" th:text="#{low.case.del}" type="submit"></button>
                 </form>
             </td>

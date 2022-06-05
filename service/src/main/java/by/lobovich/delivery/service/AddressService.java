@@ -1,6 +1,7 @@
 package by.lobovich.delivery.service;
 
 import by.lobovich.delivery.entity.Address;
+import by.lobovich.delivery.entity.PersonalInfo;
 
 public interface AddressService {
 
@@ -11,4 +12,6 @@ public interface AddressService {
     void delete(Long id);
 
     void deleteByAddress(Address address);
+
+    Address getByPersonalInfo(PersonalInfo pi);
 }

@@ -15,7 +15,6 @@
                 <label for="username" th:text="#{username}"></label>
                 <input class="form-control is-valid" id="username" name="username" required th:field="*{username}"
                        type="text"/>
-                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
             </div>
             <div th:object="${currentPersonalInfo}">
                 <label for="firstName" th:text="#{first.name}"></label>
@@ -29,7 +28,6 @@
                        th:field="*{phoneNumber}" type="tel">
                 <label for="email" th:text="#{email}">Email</label>
                 <input class="form-control is-valid" id="email" name="email" required th:field="*{email}" type="email">
-                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
             </div>
             <button class="btn btn-primary mt-2" th:text="#{registration.save}" type="submit"></button>
             <a class="btn btn-secondary mt-2" role="button" th:href="@{'/user/'+${currentUser?.getId()}}"

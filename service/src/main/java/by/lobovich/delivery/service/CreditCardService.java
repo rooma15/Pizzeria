@@ -1,6 +1,7 @@
 package by.lobovich.delivery.service;
 
 import by.lobovich.delivery.entity.CreditCard;
+import by.lobovich.delivery.entity.PersonalInfo;
 
 public interface CreditCardService {
 
@@ -11,4 +12,6 @@ public interface CreditCardService {
     void delete(Long id);
 
     void deleteByCreditCard(CreditCard creditCard);
+
+    CreditCard getByPersonalInfo(PersonalInfo pi);
 }

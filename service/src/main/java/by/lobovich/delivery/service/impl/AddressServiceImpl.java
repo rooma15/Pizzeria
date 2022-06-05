@@ -1,6 +1,8 @@
 package by.lobovich.delivery.service.impl;
 
 import by.lobovich.delivery.entity.Address;
+import by.lobovich.delivery.entity.PersonalInfo;
+import by.lobovich.delivery.entity.User;
 import by.lobovich.delivery.repository.AddressRepository;
 import by.lobovich.delivery.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,9 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void deleteByAddress(Address address) {
         addressRepository.delete(address);
+    }
+
+    public  Address getByPersonalInfo(PersonalInfo pi){
+        return addressRepository.getByPersonalInfo(pi);
     }
 }

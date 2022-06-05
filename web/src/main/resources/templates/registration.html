@@ -18,7 +18,6 @@
                 <input class="form-control is-valid" id="username" required th:field="*{username}" type="text" pattern="[A-Za-z]+"/>
                 <label for="password" th:text="#{password}"></label>
                 <input class="form-control is is-valid" id="password" required th:field="*{password}" minlength="8" type="password">
-                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
             </div>
             <div th:object="${personalInfo}">
                 <label for="firstName" th:text="#{first.name}"></label>
@@ -29,7 +28,6 @@
                 <input class="form-control is-valid" id="phoneNumber" required th:field="*{phoneNumber}" type="tel">
                 <label for="email" th:text="#{email}"></label>
                 <input class="form-control is-valid" id="email" required th:field="*{email}" type="email">
-                <input name="_csrf" th:value="${_csrf.token}" type="hidden"/>
             </div>
             <button class="btn btn-primary mt-2" th:text="#{registration.save}" type="submit"></button>
         </div>
